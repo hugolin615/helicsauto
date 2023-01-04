@@ -1,0 +1,10 @@
+Archive/
+archive/
+Result/
+result/
+log/
+logexp/
+*.pyc
+backup/
+Backup/
+*.mat
