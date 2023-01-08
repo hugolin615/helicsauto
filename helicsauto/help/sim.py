@@ -17,6 +17,8 @@ if __name__ == "__main__":
     c = complex(132790.562, 0) * (1 + (random.random() - 0.5)/2)
     ## HELICSAUTO: Publish, c, complex, TransmissionSim/transmission_voltage
 
+    ## HELICSAUTO: Sync
+
     #rValue, iValue = h.helicsInputGetComplex((subid))
     # temp = h.helicsInputGetComplex((subid))
     temp = 0.0

@@ -49,8 +49,6 @@ if __name__ == "__main__":
         if new_ind < cur_ind:
             new_ind = cur_ind
         
-        # [TODO] Maybe we only need to mark publish/subscription 
-
         if '## HELICSAUTO: Register' in line2:
             print(f'## HELICSAUTO: Register')
             new_line = new_ind * ' ' + line2
@@ -73,6 +71,13 @@ if __name__ == "__main__":
             output_f.write(new_ind * ' ' + 'while grantedtime < total_interval:' + '\n')
             new_ind = new_ind + ind_inc
 
+        elif '## HELICSAUTO: Sync' in line2:
+            print(f'## HELICSAUTO: Sync')
+            new_line = new_ind * ' ' + line2
+            output_f.write(new_line)
+            output_f.write(new_ind * ' ' + 'requested_time = grantedtime + update_interval' + '\n')
+            output_f.write(new_ind * ' ' + 'grantedtime = h.helicsFederateRequestTime(fed, requested_time)' + '\n')
+
         elif '## HELICSAUTO: Publish' in line2:
             print(f'## HELICSAUTO: Publish')
             new_line = new_ind * ' ' + line2
@@ -90,10 +95,10 @@ if __name__ == "__main__":
 
         elif '## HELICSAUTO: Subscribe' in line2:
             
-            if first_sub == False: # this is the first subscription
-                first_sub = True
-                output_f.write(new_ind * ' ' + 'requested_time = grantedtime + update_interval' + '\n')
-                output_f.write(new_ind * ' ' + 'grantedtime = h.helicsFederateRequestTime(fed, requested_time)' + '\n')
+            #if first_sub == False: # this is the first subscription
+            #    first_sub = True
+            #    output_f.write(new_ind * ' ' + 'requested_time = grantedtime + update_interval' + '\n')
+            #    output_f.write(new_ind * ' ' + 'grantedtime = h.helicsFederateRequestTime(fed, requested_time)' + '\n')
 
             print(f'## HELICSAUTO: Subscribe')
             new_line = new_ind * ' ' + line2

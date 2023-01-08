@@ -1,0 +1,19 @@
+{
+  "name": "Fed_Panda",
+  "core_type": "zmq",
+  "log_level": "warning",
+  "period": 60,
+  "uninterruptible": false,
+  "terminate_on_error": true,
+  "wait_for_current_time_update": true,
+  "publications": [
+  ],
+  "subscriptions": [
+    {
+      "global": true,
+      "key": "Feeder_S",
+      "type": "complex",
+      "unit": "VA"
+    }
+  ]
+}

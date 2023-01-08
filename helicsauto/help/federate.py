@@ -12,7 +12,7 @@ if __name__ == "__main__":
     ##########  Registering  federate and configuring from JSON################
     ## HELICSAUTO: Register
     import helics as h
-    fed = h.helicsCreateValueFederateFromConfig('fed_config.json')
+    fed = h.helicsCreateValueFederateFromConfig('../help/fed_config.json')
  
     ## HELICSAUTO: Execute
     h.helicsFederateEnterExecutingMode(fed)
@@ -27,11 +27,13 @@ if __name__ == "__main__":
         pubid = h.helicsFederateGetPublication(fed, 'TransmissionSim/transmission_voltage')
         status = h.helicsPublicationPublishComplex(pubid, c.real, c.imag)
  
+        ## HELICSAUTO: Sync
+        requested_time = grantedtime + update_interval
+        grantedtime = h.helicsFederateRequestTime(fed, requested_time)
+ 
         #rValue, iValue = h.helicsInputGetComplex((subid))
         # temp = h.helicsInputGetComplex((subid))
         temp = 0.0
-        requested_time = grantedtime + update_interval
-        grantedtime = h.helicsFederateRequestTime(fed, requested_time)
         ## HELICSAUTO: Subscribe, temp, complex, IEEE_123_feeder_0/totalLoad
         subid = h.helicsFederateGetSubscription(fed, 'IEEE_123_feeder_0/totalLoad')
         temp = h.helicsInputGetComplex((subid))
