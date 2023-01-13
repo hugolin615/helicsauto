@@ -22,7 +22,7 @@ np.random.seed(1)
  
 ## HELICSAUTO: Register
 import helics as h
-fed = h.helicsCreateValueFederateFromConfig('../pandapower/fed_config.json')
+fed = h.helicsCreateValueFederateFromConfig('../pandapower/panda_config.json')
  
 ## HELICSAUTO: Execute
 h.helicsFederateEnterExecutingMode(fed)
@@ -46,9 +46,13 @@ while grantedtime < total_interval:
     feeder_q_mvar = net.res_ext_grid.loc[0, 'q_mvar']
     feeder_s = complex(feeder_p_mw, feeder_q_mvar)
     print(f'feeder_s: {feeder_s.real} + j {feeder_s.imag}')
-    ## HELICSAUTO: Publish, feeder_s, complex, TransmissionSim/transmission_volta
-    pubid = h.helicsFederateGetPublication(fed, 'TransmissionSim/transmission_volta')
+    ## HELICSAUTO: Publish, feeder_s, complex, Feeder_S
+    pubid = h.helicsFederateGetPublication(fed, 'Feeder_S')
     status = h.helicsPublicationPublishComplex(pubid, feeder_s.real, feeder_s.imag)
+ 
+    ## HELICSAUTO: Sync
+    requested_time = grantedtime + update_interval
+    grantedtime = h.helicsFederateRequestTime(fed, requested_time)
  
 ## HELICSAUTO: Destroy
 grantedtime = h.helicsFederateRequestTime(fed, h.HELICS_TIME_MAXTIME)

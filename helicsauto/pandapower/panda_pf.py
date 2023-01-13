@@ -38,6 +38,8 @@ feeder_p_mw = net.res_ext_grid.loc[0, 'p_mw']
 feeder_q_mvar = net.res_ext_grid.loc[0, 'q_mvar']
 feeder_s = complex(feeder_p_mw, feeder_q_mvar)
 print(f'feeder_s: {feeder_s.real} + j {feeder_s.imag}')
-## HELICSAUTO: Publish, feeder_s, complex, TransmissionSim/transmission_volta
+## HELICSAUTO: Publish, feeder_s, complex, Feeder_S
+
+## HELICSAUTO: Sync
 
 ## HELICSAUTO: Destroy

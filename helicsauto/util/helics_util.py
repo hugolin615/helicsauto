@@ -25,9 +25,10 @@ if __name__ == "__main__":
 
     input_f = open(input_f_name)
     output_f = open(output_f_name, 'w')
-    cur_ind = 0 
+    # cur_ind = 0 
     new_ind = 0 
     ind_inc = 4
+    cur_ind_inc = 0
     first_sub = False
 
     if not input_f:
@@ -39,17 +40,18 @@ if __name__ == "__main__":
 
     for line in input_f:
         line2 = line.lstrip()
-        cur_ind = len(line) - len(line2)
+        new_ind = len(line) - len(line2) + cur_ind_inc
 
         if len(line2) == 0:
             new_line = ' \n'
             output_f.write(new_line)
             continue
 
-        if new_ind < cur_ind:
-            new_ind = cur_ind
+        #if new_ind < cur_ind:
+        #    new_ind = cur_ind
         
         if '## HELICSAUTO: Register' in line2:
+            #new_ind = len(line) - len(line2)
             print(f'## HELICSAUTO: Register')
             new_line = new_ind * ' ' + line2
             output_f.write(new_line)
@@ -69,7 +71,8 @@ if __name__ == "__main__":
 
             # [TODO] what is the original python scripts already has a while loop
             output_f.write(new_ind * ' ' + 'while grantedtime < total_interval:' + '\n')
-            new_ind = new_ind + ind_inc
+            cur_ind_inc = cur_ind_inc + ind_inc
+            #new_ind = new_ind + ind_inc
 
         elif '## HELICSAUTO: Sync' in line2:
             print(f'## HELICSAUTO: Sync')
@@ -113,7 +116,9 @@ if __name__ == "__main__":
 
         elif '## HELICSAUTO: Destroy' in line2:
             print(f'## HELICSAUTO: Destroy')
-            new_ind = new_ind - ind_inc
+            cur_ind_inc = cur_ind_inc - ind_inc - ind_inc
+            new_ind = new_ind + cur_ind_inc
+            # new_ind = new_ind - ind_inc
             new_line = new_ind * ' ' + line2
             output_f.write(new_line)
             output_f.write(new_ind * ' ' + 'grantedtime = h.helicsFederateRequestTime(fed, h.HELICS_TIME_MAXTIME)' + '\n')

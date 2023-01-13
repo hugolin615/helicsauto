@@ -91,8 +91,10 @@ if not CheckResultForError(simauto_obj.RunScriptCommand(scriptcommand), f'{scrip
 #val_list = val_list.tolist()
 #val_tuple = tuple(val_list)
 
+## HELICSAUTO: Sync
+
 feeder_var = complex(0, 0)
-## HELICSAUTO: Subscribe, feeder_var, complex, Feeder_S 
+## HELICSAUTO: Subscribe, feeder_var, complex, Feeder_S
 
 FieldArray = VARIANT(pythoncom.VT_VARIANT | pythoncom.VT_ARRAY, loadparamlist)
 AllValueArray = [None]*num_obj

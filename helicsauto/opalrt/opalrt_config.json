@@ -1,5 +1,5 @@
 {
-  "name": "Fed_PW",
+  "name": "Fed_OPAL",
   "core_type": "zmq",
   "log_level": "warning",
   "period": 60,
