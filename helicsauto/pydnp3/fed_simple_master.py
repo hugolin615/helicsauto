@@ -1,29 +1,29 @@
 # import cmd
 import logging
 import sys
-
+ 
 from datetime import datetime
 from pydnp3 import opendnp3, openpal
 from master import MyMaster, MyLogger, AppChannelListener, SOEHandler, MasterApplication
 from master import command_callback, restart_callback
-
+ 
 stdout_stream = logging.StreamHandler(sys.stdout)
 stdout_stream.setFormatter(logging.Formatter('%(asctime)s\t%(name)s\t%(levelname)s\t%(message)s'))
-
+ 
 _log = logging.getLogger(__name__)
 _log.addHandler(stdout_stream)
 _log.setLevel(logging.DEBUG)
-
-
+ 
+ 
 #class MasterCmd(cmd.Cmd):
 class SimpleMaster():
     """
         Create a DNP3Manager that acts as the Master in a DNP3 Master/Outstation interaction.
-
+ 
         Accept command-line input that sends commands and data to the Outstation,
         using the line-oriented command interpreter framework from the 'cmd' Python Standard Library.
     """
-
+ 
     def __init__(self):
         #cmd.Cmd.__init__(self)
         #self.prompt = 'master> '   # Used by the Cmd framework, displayed when issuing a command-line prompt.
@@ -31,14 +31,14 @@ class SimpleMaster():
                                     listener=AppChannelListener(),
                                     soe_handler=SOEHandler(),
                                     master_application=MasterApplication())
-
+ 
     #def startup(self):
     #    """Display the command-line interface's menu and issue a prompt."""
     #    print('Welcome to the DNP3 master request command line. Supported commands include:')
     #    self.do_menu('')
     #    self.cmdloop('Please enter a command.')
     #    exit()
-
+ 
     def do_menu(self, line):
         """Display a menu of command-line options. Command syntax is: menu"""
         print('\tchan_log_all\tSet the channel log level to ALL_COMMS.')
@@ -60,17 +60,17 @@ class SimpleMaster():
         print('\tscan_range\tPerform an ad-hoc scan (ScanRange) of GroupVariation 1.2, range 0..3.')
         print('\tscan_slow\tDemand immediate execution of the slow (every 30 mins) All-Classes scan.')
         print('\twrite_time\tWrite a TimeAndInterval to the outstation.')
-
+ 
     def do_chan_log_all(self, line):
         """Set the channel log level to ALL_COMMS. Command syntax is: chan_log_all"""
         self.application.channel.SetLogFilters(openpal.LogFilters(opendnp3.levels.ALL_COMMS))
         print('Channel log filtering level is now: {0}'.format(opendnp3.levels.ALL_COMMS))
-
+ 
     def do_chan_log_normal(self, line):
         """Set the channel log level to NORMAL. Command syntax is: chan_log_normal"""
         self.application.channel.SetLogFilters(openpal.LogFilters(opendnp3.levels.NORMAL))
         print('Channel log filtering level is now: {0}'.format(opendnp3.levels.NORMAL))
-
+ 
     def do_disable_unsol(self, line):
         """Perform the function DISABLE_UNSOLICITED. Command syntax is: disable_unsol"""
         headers = [opendnp3.Header().AllObjects(60, 2),
@@ -80,29 +80,29 @@ class SimpleMaster():
                                                 opendnp3.FunctionCode.DISABLE_UNSOLICITED,
                                                 headers,
                                                 opendnp3.TaskConfig().Default())
-
+ 
     def do_mast_log_all(self, line):
         """Set the master log level to ALL_COMMS. Command syntax is: mast_log_all"""
         self.application.master.SetLogFilters(openpal.LogFilters(opendnp3.levels.ALL_COMMS))
         _log.debug('Master log filtering level is now: {0}'.format(opendnp3.levels.ALL_COMMS))
-
+ 
     def do_mast_log_normal(self, line):
         """Set the master log level to NORMAL. Command syntax is: mast_log_normal"""
         self.application.master.SetLogFilters(openpal.LogFilters(opendnp3.levels.NORMAL))
         _log.debug('Master log filtering level is now: {0}'.format(opendnp3.levels.NORMAL))
-
+ 
     def do_o1(self, line):
         """Send a DirectOperate BinaryOutput (group 12) index 5 LATCH_ON to the Outstation. Command syntax is: o1"""
         self.application.send_direct_operate_command(opendnp3.ControlRelayOutputBlock(opendnp3.ControlCode.LATCH_ON),
                                                      5,
                                                      command_callback)
-
+ 
     def do_o2(self, line):
         """Send a DirectOperate AnalogOutput (group 41) index 10 value 7 to the Outstation. Command syntax is: o2"""
         self.application.send_direct_operate_command(opendnp3.AnalogOutputInt32(7),
                                                      10,
                                                      command_callback)
-
+ 
     def do_o3(self, line):
         """Send a DirectOperate BinaryOutput (group 12) CommandSet to the Outstation. Command syntax is: o3"""
         self.application.send_direct_operate_command_set(opendnp3.CommandSet(
@@ -112,7 +112,7 @@ class SimpleMaster():
             ]),
             command_callback
         )
-
+ 
         # This could also have been in multiple steps, as follows:
         # command_set = opendnp3.CommandSet()
         # command_set.Add([
@@ -120,18 +120,18 @@ class SimpleMaster():
         #     opendnp3.WithIndex(opendnp3.ControlRelayOutputBlock(opendnp3.ControlCode.LATCH_OFF), 1)
         # ])
         # self.application.send_direct_operate_command_set(command_set, command_callback)
-
+ 
     def do_restart(self, line):
         """Request that the Outstation perform a cold restart. Command syntax is: restart"""
         self.application.master.Restart(opendnp3.RestartType.COLD, restart_callback)
-
+ 
     def do_s1(self, line=None):
         """Send a SelectAndOperate BinaryOutput (group 12) index 8 LATCH_ON to the Outstation. Command syntax is: s1"""
         self.application.send_select_and_operate_command(opendnp3.ControlRelayOutputBlock(opendnp3.ControlCode.LATCH_ON),
                                                          8,
                                                          command_callback)
         return True
-
+ 
     def do_s2(self, line):
         """Send a SelectAndOperate BinaryOutput (group 12) CommandSet to the Outstation. Command syntax is: s2"""
         self.application.send_select_and_operate_command_set(opendnp3.CommandSet(
@@ -140,23 +140,23 @@ class SimpleMaster():
             ]),
             command_callback
         )
-
+ 
     def do_scan_all(self, line):
         """Call ScanAllObjects. Command syntax is: scan_all"""
         self.application.master.ScanAllObjects(opendnp3.GroupVariationID(2, 1), opendnp3.TaskConfig().Default())
-
+ 
     def do_scan_fast(self, line):
         """Demand an immediate fast scan. Command syntax is: scan_fast"""
         self.application.fast_scan.Demand()
-
+ 
     def do_scan_range(self, line):
         """Do an ad-hoc scan of a range of points (group 1, variation 2, indexes 0-3). Command syntax is: scan_range"""
         self.application.master.ScanRange(opendnp3.GroupVariationID(1, 2), 0, 3, opendnp3.TaskConfig().Default())
-
+ 
     def do_scan_slow(self, line):
         """Demand an immediate slow scan. Command syntax is: scan_slow"""
         self.application.slow_scan.Demand()
-
+ 
     def do_write_time(self, line):
         """Write a TimeAndInterval to the Outstation. Command syntax is: write_time"""
         millis_since_epoch = int((datetime.now() - datetime.utcfromtimestamp(0)).total_seconds() * 1000.0)
@@ -165,35 +165,51 @@ class SimpleMaster():
                                                                opendnp3.IntervalUnits.Seconds),
                                       0,                            # index
                                       opendnp3.TaskConfig().Default())
-
+ 
     def do_quit(self, line=None):
         """Quit the command-line interface. Command syntax is: quit"""
         self.application.shutdown()
         exit()
-
-
+ 
+ 
 def main():
-
+ 
     simple_master = SimpleMaster()
-    
+ 
     #_log.debug('Initialization complete.')
     input("Press Enter to continue...")
-
+ 
     ## HELICSAUTO: Register
-
+    import helics as h
+    fed = h.helicsCreateValueFederateFromConfig('../pydnp3/simple_master_config.json')
+ 
     ## HELICSAUTO: Execute
-
-    s1_ret = simple_master.do_s1()
-    comm_res = complex(int(s1_ret), 0)
-    ## HELICSAUTO: Publish, comm_res, complex, Comm_Res
-
-    ## HELICSAUTO: Sync 
-
+    h.helicsFederateEnterExecutingMode(fed)
+    hours = 1
+    total_interval = int(60 * 60 * hours)
+    update_interval = int(h.helicsFederateGetTimeProperty(fed, h.HELICS_PROPERTY_TIME_PERIOD))
+    grantedtime = 0
+    while grantedtime < total_interval:
+ 
+        s1_ret = simple_master.do_s1()
+        comm_res = complex(int(s1_ret), 0)
+        ## HELICSAUTO: Publish, comm_res, complex, Comm_Res
+        pubid = h.helicsFederateGetPublication(fed, 'Comm_Res')
+        status = h.helicsPublicationPublishComplex(pubid, comm_res.real, comm_res.imag)
+ 
+        ## HELICSAUTO: Sync 
+        requested_time = grantedtime + update_interval
+        grantedtime = h.helicsFederateRequestTime(fed, requested_time)
+ 
     ## HELICSAUTO: Destroy
-
-    simple_master.do_quit()
-    #_log.debug('Exiting.')
-
-
+    grantedtime = h.helicsFederateRequestTime(fed, h.HELICS_TIME_MAXTIME)
+    status = h.helicsFederateDisconnect(fed)
+    h.helicsFederateFree(fed)
+    h.helicsCloseLibrary()
+ 
+simple_master.do_quit()
+#_log.debug('Exiting.')
+ 
+ 
 if __name__ == '__main__':
     main()

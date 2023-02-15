@@ -1,27 +1,18 @@
 {
-  "name": "Fed_Panda",
+  "name": "Fed_PyDNP3",
   "core_type": "zmq",
   "log_level": "warning",
   "period": 60,
-  "broker_address": "tcp://10.10.54.154",
   "uninterruptible": false,
   "terminate_on_error": true,
   "wait_for_current_time_update": true,
   "publications": [
     {
       "global": true,
-      "key": "Feeder_S",
-      "type": "complex",
-      "unit": "VA"
-    }
-  ],
-  "subscriptions": [
-    {
-      "global": true,
       "key": "Comm_Res",
       "type": "complex",
       "unit": "None"
     }
-
-  ]
+  ],
+  "subscriptions": []
 }

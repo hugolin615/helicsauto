@@ -1,5 +1,5 @@
 {
-  "name": "Fed_Panda",
+  "name": "Fed_PyDNP3",
   "core_type": "zmq",
   "log_level": "warning",
   "period": 60,
@@ -10,18 +10,10 @@
   "publications": [
     {
       "global": true,
-      "key": "Feeder_S",
-      "type": "complex",
-      "unit": "VA"
-    }
-  ],
-  "subscriptions": [
-    {
-      "global": true,
       "key": "Comm_Res",
       "type": "complex",
       "unit": "None"
     }
-
-  ]
+  ],
+  "subscriptions": []
 }
