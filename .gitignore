@@ -8,3 +8,4 @@ logexp/
 backup/
 Backup/
 *.mat
+__pycache__/
