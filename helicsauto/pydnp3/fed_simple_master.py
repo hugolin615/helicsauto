@@ -207,8 +207,8 @@ def main():
     h.helicsFederateFree(fed)
     h.helicsCloseLibrary()
  
-simple_master.do_quit()
-#_log.debug('Exiting.')
+    simple_master.do_quit()
+    #_log.debug('Exiting.')
  
  
 if __name__ == '__main__':
