@@ -31,7 +31,7 @@ total_interval = int(60 * 60 * hours)
 update_interval = int(h.helicsFederateGetTimeProperty(fed, h.HELICS_PROPERTY_TIME_PERIOD))
 grantedtime = 0
 while grantedtime < total_interval:
- 
+
     # change load to see the pf results
     load_var = np.random.randint(low = 90, high = 110, size = n_load) / 100
     #print(f'load_var is {load_var}')
