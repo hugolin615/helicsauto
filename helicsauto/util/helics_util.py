@@ -64,7 +64,7 @@ if __name__ == "__main__":
             output_f.write(new_line)
             output_f.write(new_ind * ' ' + 'h.helicsFederateEnterExecutingMode(fed)' + '\n')
 
-            output_f.write(new_ind * ' ' + 'hours = 1' + '\n')
+            output_f.write(new_ind * ' ' + 'hours = 24 * 7' + '\n')
             output_f.write(new_ind * ' ' + 'total_interval = int(60 * 60 * hours)' + '\n')
             output_f.write(new_ind * ' ' + 'update_interval = int(h.helicsFederateGetTimeProperty(fed, h.HELICS_PROPERTY_TIME_PERIOD))' + '\n')
             output_f.write(new_ind * ' ' + 'grantedtime = 0' + '\n')
@@ -116,8 +116,8 @@ if __name__ == "__main__":
 
         elif '## HELICSAUTO: Destroy' in line2:
             print(f'## HELICSAUTO: Destroy')
-            cur_ind_inc = cur_ind_inc - ind_inc - ind_inc
-            new_ind = new_ind + cur_ind_inc
+            cur_ind_inc = cur_ind_inc - ind_inc
+            new_ind = new_ind + cur_ind_inc - ind_inc
             # new_ind = new_ind - ind_inc
             new_line = new_ind * ' ' + line2
             output_f.write(new_line)
